@@ -68,6 +68,32 @@ into fresh terrain and break within a second or two, or recover on a quiet
 server / when you are the main source of chunk generation. If you already know
 the seed, `/randar seed <value>` skips all of this.
 
+### Field routine for an unknown seed and an unknown area
+
+1. Run `/randar status` and check that auto-capture is on. Carry one clay block.
+   A placed clay block still drops four clay balls, and four balls craft back
+   into a block, so one block is effectively reusable. Do not use Silk Touch.
+2. Work in survival in the overworld. Go somewhere quiet, ideally well away
+   from spawn, farms, portals and busy bases.
+3. Travel in a straight line until you are clearly generating new chunks. Stop
+   as soon as the terrain around you is fresh.
+4. Place the clay, break it, and stand still for about a second so all four item
+   entities arrive. Randar reports sample 1.
+5. Move another 300 to 500 blocks into fresh chunks. Place and break the clay
+   again. Randar intersects the samples and reports the recovered seed.
+6. If it says candidates remain, break a third sample. If it finds no match,
+   run `/randar recover clear`, travel to a different quiet direction, and
+   repeat. On a busy server, raise `/randar recoverlag 100000` first so a longer
+   gap between chunk generation and the break is still covered.
+7. Once `/randar status` shows a recovered seed, `/randar last` gives the latest
+   region and its block bounds. Press F3 to compare with your coordinates.
+
+After the seed is known, every qualifying break produces a hit. Stand still in
+already-loaded terrain and break clay every so often: any far hit you did not
+cause is another player's chunk load. Repeated hits in the same region are the
+strongest signal. A single hit is still only a 512 x 512 region, not a player
+position.
+
 ## Which drops work
 
 The solver needs at least four item entities from one block. The first six are
@@ -121,7 +147,7 @@ temples use one roll per axis.
 ## Does a hit identify a specific player?
 
 No. A hit identifies a **512 x 512 block region where chunks were generated**.
-That is the information the RNG contains. The mod records three hints:
+That is the information the RNG contains. The mod records four hints:
 
 - whether the region is the one you are standing in;
 - distance and compass direction from you to the region centre;
