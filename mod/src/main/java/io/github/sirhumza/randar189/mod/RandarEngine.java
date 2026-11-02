@@ -68,7 +68,8 @@ public final class RandarEngine {
 
     /** Recovery is a convenience feature; bound its memory and UI noise. */
     private static final int MAX_RECOVERY_SAMPLES = 6;
-    private static final int MAX_RECOVERY_STATES = 4;
+    /** A solve can return a handful of states; keep the top eight. */
+    private static final int MAX_RECOVERY_STATES = 8;
     private static final int MAX_RECOVERY_MATCHES = 16;
 
     private static final Logger LOGGER = LogManager.getLogger("randar189");
@@ -590,7 +591,7 @@ public final class RandarEngine {
         record.otherPlayersSample = names.toString();
     }
 
-    /** 0 = north, 90 = east, matching Minecraft's screen coordinates. */
+    /** 0 = north, 90 = east; a compass bearing, not Minecraft's yaw. */
     private static String compass(double dx, double dz) {
         if (dx == 0.0D && dz == 0.0D) {
             return "";

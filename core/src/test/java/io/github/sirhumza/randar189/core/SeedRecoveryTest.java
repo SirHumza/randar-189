@@ -87,6 +87,35 @@ public class SeedRecoveryTest {
     }
 
     @Test
+    public void recoveredSeedFindsTheResetRegion() {
+        TestSupport.DropRun first = TestSupport.captureAfterReset(
+                WORLD_SEED, StructureType.MONUMENT,
+                PLAYER_REGION_X + 1, PLAYER_REGION_Z - 1, 500,
+                OreType.DIAMOND, 3);
+        TestSupport.DropRun second = TestSupport.captureAfterReset(
+                WORLD_SEED, StructureType.TEMPLE,
+                PLAYER_REGION_X - 1, PLAYER_REGION_Z + 1, 3_000,
+                OreType.REDSTONE, 0);
+
+        long[] shared = SeedRecovery.intersect(
+                SeedRecovery.candidates(statesOf(first, OreType.DIAMOND, 3),
+                        PLAYER_REGION_X, PLAYER_REGION_Z, 1, MAX_LAG),
+                SeedRecovery.candidates(statesOf(second, OreType.REDSTONE, 0),
+                        PLAYER_REGION_X, PLAYER_REGION_Z, 1, MAX_LAG));
+        assertArrayEquals(new long[] {WORLD_SEED}, shared);
+
+        long state = DropCracker.solve(first.observation, OreType.DIAMOND, 3)
+                .get(0).firstPositionState();
+        StructureLocator.Hit hit = StructureLocator.reverseFirstInWindow(
+                state, shared[0], PLAYER_REGION_X, PLAYER_REGION_Z, 2, MAX_LAG);
+
+        assertTrue("recovered seed must find the monument reset", hit != null);
+        assertEquals(StructureType.MONUMENT, hit.type());
+        assertEquals(PLAYER_REGION_X + 1, hit.regionX());
+        assertEquals(PLAYER_REGION_Z - 1, hit.regionZ());
+    }
+
+    @Test
     public void aResetOutsideTheWindowIsNotACandidate() {
         TestSupport.DropRun farAway = TestSupport.captureAfterReset(
                 WORLD_SEED, StructureType.MONUMENT,

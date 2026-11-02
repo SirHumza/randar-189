@@ -61,6 +61,13 @@ If the first two samples do not intersect, travel further and break a third.
 Two breaks with no chunk generation between them describe the same RNG orbit
 and are deliberately rejected as ambiguous.
 
+Recovery assumes the last structure reset came from a chunk near you. On a busy
+server another player can reset the RNG between your chunk generation and your
+break, and then a local sample contains no candidate for the true seed. Cross
+into fresh terrain and break within a second or two, or recover on a quiet
+server / when you are the main source of chunk generation. If you already know
+the seed, `/randar seed <value>` skips all of this.
+
 ## Which drops work
 
 The solver needs at least four item entities from one block. The first six are
@@ -129,13 +136,16 @@ purpose.
 
 ## Compatibility and limits
 
-- Works against vanilla, Spigot and Paper 1.8.x. The client sees the same drop
-  packets either way.
+- Works against vanilla and unpatched Spigot/Paper 1.8.x. The client sees the
+  same drop packets either way. Builds with Paper's separate world-generation
+  `Random` patch do not reset the RNG that produces drops, so hits and seed
+  recovery both stop working.
 - Spigot can override structure salts in `spigot.yml`
   (`seed-village`, `seed-feature`, `seed-monument`, `seed-slime`). The defaults
   are assumed. Custom salts break both structure hits and seed recovery.
 - `generate-structures: false` means no structure reset exists. Drops can still
-  recover the world RNG state, but there is nothing to walk back to.
+  recover the world RNG state in principle, but there is nothing to walk back to
+  and seed recovery has no candidate set.
 - Plugins that change drop counts, drop positions, or merge drops break the
   solve. The mod rejects stacked entities rather than guessing.
 - Fortune is taken from the held tool, with two safeguards: a single-base ore
