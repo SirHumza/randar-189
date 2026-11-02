@@ -172,6 +172,10 @@ purpose.
 - `generate-structures: false` means no structure reset exists. Drops can still
   recover the world RNG state in principle, but there is nothing to walk back to
   and seed recovery has no candidate set.
+- A fully pregenerated world has no new structure resets. Loading an
+  already-generated chunk does not run the structure checks; only the first
+  generation of a chunk does. Travel beyond the pregenerated area, use a fresh
+  resource world, or use a world that still has ungenerated terrain.
 - Plugins that change drop counts, drop positions, or merge drops break the
   solve. The mod rejects stacked entities rather than guessing.
 - Fortune is taken from the held tool, with two safeguards: a single-base ore
