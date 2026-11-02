@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "randar189",
+    "name": "Randar 1.8.9",
+    "description": "Recovers the world RNG from ore drop positions in Minecraft 1.8.9, finds the last structure region, and recovers the low 48 bits of an unknown multiplayer seed from two independent breaks. Also lists structures, slime chunks, nether fortresses and mineshafts once the seed is known.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "https://github.com/SirHumza/randar-189",
+    "authorList": ["SirHumza"],
+    "credits": "Math based on the Randar project; truncated-LCG recovery by LattiCG.",
+    "logoFile": "",
+    "screenshots": [],
+    "parent": "",
+    "useDependencyInformation": false
+  }
+]

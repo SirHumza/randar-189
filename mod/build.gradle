@@ -1,0 +1,49 @@
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+archivesBaseName = 'randar-189'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+minecraft {
+    version = '1.8.9-11.15.1.2318-1.8.9'
+    runDir = 'run'
+    mappings = 'stable_22'
+}
+
+configurations {
+    shade
+}
+
+dependencies {
+    compile project(':core')
+    compile 'com.seedfinding:latticg:1.07'
+    runtime project(':core')
+    runtime 'com.seedfinding:latticg:1.07'
+
+    shade 'com.seedfinding:latticg:1.07'
+
+    testCompile 'junit:junit:4.12'
+}
+
+jar {
+    // The mod ships the core solver and LattiCG in one jar.  Forge 1.8.9 has no
+    // dependency resolver at runtime, so a thin jar would fail on a normal client.
+    dependsOn ':core:classes'
+    from project(':core').sourceSets.main.output
+    from { configurations.shade.collect { it.isDirectory() ? it : zipTree(it) } }
+    duplicatesStrategy = 'exclude'
+}
+
+processResources {
+    inputs.property 'version', project.version
+    inputs.property 'mcversion', project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}

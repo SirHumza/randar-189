@@ -1,0 +1,31 @@
+name: build
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+
+      - name: Test the solver
+        run: ./gradlew :core:test --no-daemon --stacktrace
+
+      - name: Build the mod and run mod tests
+        run: ./gradlew :mod:build --no-daemon --stacktrace
+
+      - name: Upload the jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: randar-189
+          path: mod/build/libs/randar-189-*.jar
+          if-no-files-found: error
