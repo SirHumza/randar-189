@@ -1,5 +1,7 @@
 # Randar 1.8.9
 
+<p align="right"><a href="https://github.com/SirHumza"><img src="https://raw.githubusercontent.com/SirHumza/portfolio/main/avatar-clean.png" width="64" alt="SirHumza’s ink-sketch cat mascot with a gold monocle" /></a><br /><a href="https://github.com/SirHumza"><img src="https://img.shields.io/badge/by-SirHumza-C8A63A?style=flat-square&labelColor=111111" alt="by SirHumza" /></a></p>
+
 A client-side Forge mod that reads the server's world RNG out of ordinary block
 drops, then points at the 512 x 512 region where chunks were last generated.
 On a multiplayer server where the seed is hidden, two breaks separated by fresh
